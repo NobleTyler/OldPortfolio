@@ -1,0 +1,27 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "This is my portfolio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NobleTyler/Portfolio.git"
+  },
+  "keywords": [
+    "portfolio"
+  ],
+  "author": "Tyler Noble",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NobleTyler/Portfolio/issues"
+  },
+  "homepage": "https://github.com/NobleTyler/Portfolio#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "request": "^2.88.0"
+  }
+}
