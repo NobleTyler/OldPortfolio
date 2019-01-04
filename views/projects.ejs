@@ -1,12 +1,26 @@
 <% include partials/header %>
-<h1>This is where my projects will be</h1>
+	<div class="container">
+		<header class="jumbotron">
+			<div class="container">
+				<h1>Projects by Me</h1>
+				<p>Contact me for more details.</p>
+				<p>
+					<a class="btn btn-primary btn-lg" href="/projects/new">Add new project</a>
+				</p>
+			</div>
+		</header>
 
-<% projectList.forEach(function(project){ %>
-	<div>
-	<li>
-	<%= project.name %>
-	<img src="<%=project.image%>"</img>
-	</li>
-	</div>
-<% }); %>
-<% include partials/footer %>
+		<div class="row text-center" style="display:flex; flex-wrap: wrap;">
+			<% projectList.forEach(function(project){ %>
+				<div class="col-md-3 col-sm-6">
+					<div class="thumbnail">
+						<img class="img-fluid" src="<%=project.image%>">
+						<div class="caption">
+							<h4> <%=project.name%></h4>
+							</div>
+						</div>
+					</div>
+					<% }); %>
+					</div>
+				</div>
+				<% include partials/footer %>
