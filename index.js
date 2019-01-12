@@ -8,7 +8,8 @@ const port = 3000;
 var projectSchema = new mongoose.Schema({
 	name: String,
 	image: String,
-	url: String
+	url: String,
+	description:String
 });
 
 var Project = mongoose.model("Project",projectSchema);
@@ -33,15 +34,16 @@ app.get("/", function(req,res){
 	res.render("landing");
 });
 
+//index
 app.get("/projects",function(req,res){
 	Project.find({},function(err,allProjects){
 		if(err)
 			console.log("It messed up at retrieving projects.");
 		else
-			res.render("projects",{projects:allProjects});
+			res.render("index",{projects:allProjects});
 			})
 });
-
+//create
 app.post("/projects", function (req,res) {
 	
 	var name = req.body.name;
@@ -59,12 +61,25 @@ app.post("/projects", function (req,res) {
 	//get data from from and add to projectList
 	//redirect to projects
 });
-
+//new
 app.get("/projects/new",function(req,res){
-	res.render("new.ejs");
+	res.render("new");
+});
+//show
+app.get("/projects/:id",function(req, res) {
+   //find project with id
+   Project.findById(req.params.id, function(err,foundProject){
+   	if(err)
+   		console.log("project find didnt work");
+   	else
+   		res.render("show",{projects: foundProject});
+   });
+   //render show project
 });
 
+
 //Use for local machine
+
 //app.listen(port, () => console.log(`Portfolio initialized on port ${port}!`));
 
 //Use for cloud9
