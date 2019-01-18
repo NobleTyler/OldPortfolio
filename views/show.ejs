@@ -5,4 +5,11 @@
 <img src="<%= projects.image %>">
 <p><%= projects.description %></p>
 
+<% projects.comments.forEach(function(comment){ %>
+    <p>
+        <strong><%= comment.author %>-</strong>
+        <p><%= comment.text %></p>
+        </p> 
+<% }) %>
+
 				<% include partials/footer %>
