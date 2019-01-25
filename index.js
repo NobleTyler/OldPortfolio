@@ -3,6 +3,7 @@ var express = require("express"),
  bodyParser = require("body-parser"),
    mongoose = require("mongoose"),
    Project = require("./models/project"),
+   Comment = require("./models/comment"),
    seedDB = require("./seeds")
    ;
    
@@ -22,7 +23,7 @@ app.get("/projects",function(req,res){
 		if(err)
 			console.log("It messed up at retrieving projects.");
 		else
-			res.render("index",{projects:allProjects});
+			res.render("projects/index",{projects:allProjects});
 			})
 });
 //create
@@ -45,7 +46,7 @@ app.post("/projects", function (req,res) {
 });
 //new
 app.get("/projects/new",function(req,res){
-	res.render("new");
+	res.render("projects/new");
 });
 //show
 app.get("/projects/:id",function(req, res) {
@@ -54,12 +55,45 @@ app.get("/projects/:id",function(req, res) {
    	if(err)
    		console.log("project find didnt work");
    	else
-   		res.render("show",{projects: foundProject});
+   		res.render("projects/show",{projects: foundProject});
    });
    //render show project
 });
 
 
+
+app.get("/", function(req,res){
+	res.render("landing");
+});
+
+//---------Comment routes----------------
+app.get("/projects/:id/comments/new",function(req, res) {
+	Project.findById(req.params.id,function(err,project){
+		if(err){
+			console.log(err);
+		} else{
+			res.render("comments/new", {project: project });
+		}
+	});
+});
+
+app.post("/projects/:id/comments",function(req,res){
+	Project.findById(req.params.id,function(err, project) {
+	    if(err){
+	    	console.log(err);
+	   	res.redirect("/projects")
+	    }else{
+	    	Comment.create(req.body.comment,function(err,comment){
+	    		if(err)
+	    			console.log(err);
+	    		else
+	    			project.comments.push(comment);
+	    			project.save();
+	    			res.redirect('/projects/'+ project._id);
+	    	});
+	    }
+	});
+});
 //Use for local machine
 
 //app.listen(port, () => console.log(`Portfolio initialized on port ${port}!`));

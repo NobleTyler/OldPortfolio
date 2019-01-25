@@ -1,10 +1,12 @@
 
-<% include partials/header %>
+<% include ../partials/header %>
 
 <h1><%= projects.name %></h1>
 <img src="<%= projects.image %>">
 <p><%= projects.description %></p>
-
+<p>
+    <a class="btn btn-success" href="/projects/<%= projects._id %>/comments/new">Add new Comment</a>
+</p>
 <% projects.comments.forEach(function(comment){ %>
     <p>
         <strong><%= comment.author %>-</strong>
@@ -12,4 +14,4 @@
         </p> 
 <% }) %>
 
-				<% include partials/footer %>
+				<% include ../partials/footer %>
