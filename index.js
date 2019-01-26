@@ -11,6 +11,7 @@ mongoose.connect("mongodb://localhost:27017/Portfolio", {useNewUrlParser: true})
 const port = 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine","ejs");
+app.use(express.static(__dirname+"/public"))
 seedDB();
 
 app.get("/", function(req,res){
@@ -55,7 +56,7 @@ app.get("/projects/:id",function(req, res) {
    	if(err)
    		console.log("project find didnt work");
    	else
-   		res.render("projects/show",{projects: foundProject});
+   		res.render("projects/show",{project: foundProject});
    });
    //render show project
 });
