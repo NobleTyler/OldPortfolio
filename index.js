@@ -97,9 +97,9 @@ app.post("/projects/:id/comments",function(req,res){
 });
 //Use for local machine
 
-//app.listen(port, () => console.log(`Portfolio initialized on port ${port}!`));
+app.listen(port, () => console.log(`Portfolio initialized on port ${port}!`));
 
 //Use for cloud9
-app.listen(process.env.PORT, process.env.IP, function(){
-   console.log("The Portfolio Server Has Started!");
-});
+//app.listen(process.env.PORT, process.env.IP, function(){
+//   console.log("The Portfolio Server Has Started!");
+//});
