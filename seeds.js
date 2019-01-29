@@ -9,12 +9,12 @@ var data=[
 
 function seedDB(){
     //removes projects
-    Project.remove({},function(err){
+    Project.deleteMany({},function(err){
         if(err){
             console.log(err);
         }
         console.log("removed projects"); //adds a few projects
-    data.forEach(function(seed){
+/*    data.forEach(function(seed){
         Project.create(seed,function(err,project){
             if(err)
                 console.log(err);
@@ -37,8 +37,8 @@ function seedDB(){
             });
                     });
     });
-   
-    })
+   */
+    });
 }
  
  module.exports = seedDB;

@@ -14,7 +14,7 @@ router.get("/",function(req,res){
 //create
 router.post("/", function (req,res) {
 	
-	var name = req.body.name;
+	var name  = req.body.name;
 	var image = req.body.image;
 	var newProject= {name:name, image:image};
 	
@@ -38,7 +38,7 @@ router.get("/:id",function(req, res) {
    //find project with id
    Project.findById(req.params.id).populate("comments").exec(function(err,foundProject){
    	if(err)
-   		console.log("project find didnt work");
+   		console.log(err);
    	else
    		res.render("projects/show",{project: foundProject});
    });

@@ -22,10 +22,16 @@ router.post("/",isLoggedIn,function(req,res){
 			Comment.create(req.body.comment,function(err,comment){
 				if(err)
 					console.log(err);
-				else
+				else{
+					comment.author.id= req.user._id;
+					comment.author.username= req.user.username;
+					comment.save();
 					project.comments.push(comment);
-				project.save();
-				res.redirect('/projects/'+ project._id);
+					comment.author.
+
+						project.save();
+					res.redirect('/projects/'+ project._id);
+				}
 			});
 		}
 	});
