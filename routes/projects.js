@@ -14,12 +14,19 @@ router.get("/",function(req,res){
 router.post("/",isLoggedIn, function (req,res) {
 	var name  = req.body.name;
 	var image = req.body.image;
-	var newProject= {name:name, image:image};
-	Project.create(newProject,function(err,newlycreated){
+	var desc = req.body.description;
+	var author = {
+		id: req.user._id,
+		username: req.user.username
+	}
+	var newProject= {name:name, image:image,description:desc, author:author };
+	Project.create(newProject,function(err,newlyCreated){
 		if(err)
 			alert("Cant be blank project bud");
-		else
+		else{
+			console.log(newlyCreated);
 			res.redirect("projects");
+	}
 	})
 	res.redirect("/projects");
 	//get data from from and add to projectList
