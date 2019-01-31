@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Project = require("../models/project");
+var middleware = require("../middleware");
 //index
 router.get("/",function(req,res){
 	Project.find({},function(err,allProjects){
@@ -11,7 +12,7 @@ router.get("/",function(req,res){
 		})
 	});
 //create
-router.post("/",isLoggedIn, function (req,res) {
+router.post("/",middleware.isLoggedIn, function (req,res) {
 	var name  = req.body.name;
 	var image = req.body.image;
 	var desc = req.body.description;
@@ -33,7 +34,7 @@ res.redirect("/projects");
 //redirect to projects
 });
 //new
-router.get("/new",isLoggedIn,function(req,res){
+router.get("/new",middleware.isLoggedIn,function(req,res){
 	res.render("projects/new");
 	});
 //show
@@ -48,23 +49,17 @@ router.get("/:id",function(req, res) {
 	//render show project
 	});
 
-//middleware
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-	return next();
-    }
-    res.redirect("/login");
-}
+
 
 //Edit Project Route
-router.get('/:id/edit',checkProjectOwnership,function(req,res){
-	
+router.get('/:id/edit',middleware.checkProjectOwnership,function(req,res){
+
 	Project.findById(req.params.id,function(err,foundProject){
 		res.render("projects/edit",{project:foundProject});
 		});
 	});
 
-router.put("/:id",checkProjectOwnership,function(req,res){
+router.put("/:id",middleware.checkProjectOwnership,function(req,res){
 	//find and update campground by id
 	Project.findByIdAndUpdate(req.params.id,req.body.project,function(err,updatedProject){
 		if(err)
@@ -75,7 +70,7 @@ router.put("/:id",checkProjectOwnership,function(req,res){
 		});
 	});
 //Destroy Project Route
-router.delete("/:id",checkProjectOwnership,function(req,res){
+router.delete("/:id",middleware.checkProjectOwnership,function(req,res){
 	Project.findByIdAndRemove(req.params.id,function(err,updatedProject){
 		if(err)
 		res.redirect("/projects");
@@ -84,27 +79,6 @@ router.delete("/:id",checkProjectOwnership,function(req,res){
 		}
 		});
 	});
-function checkProjectOwnership(req,res,next){
-    if(req.isAuthenticated()){
-	Project.findById(req.params.id,function(err,foundProject){
-		if(err)
-		res.redirect("back");
-		else
-		if(foundProject.author.id.equals(req.user._id)){
-		next();
-		}
-		else{
-		res.redirect("back");
-		}
-		});
 
-    }
-    else{
-	var nope =" You need to be logged in homie";
-	res.redirect("back");
-	console.log(nope);
-    }
-
-};
 module.exports = router;
 
