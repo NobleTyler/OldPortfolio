@@ -8,7 +8,9 @@ var express = require("express"),
 	passport = require("passport"),
 	LocalStrategy= require("passport-local"),
 	User = require("./models/user"),
-	seedDB = require("./seeds")
+	seedDB = require("./seeds"),
+	flash= require("./connect-flash")
+	;
  
 //Required Routes
 var commentRoutes = require('./routes/comments'),
@@ -20,6 +22,7 @@ mongoose.connect("mongodb://localhost:27017/Portfolio",{useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname+"/public"))
 app.set("view engine","ejs");
+app.use(flash());
 app.use(methodOverride("_method"));
 
 // PASSPORT CONFIGURATION
