@@ -9,7 +9,7 @@ var express = require("express"),
 	LocalStrategy= require("passport-local"),
 	User = require("./models/user"),
 	seedDB = require("./seeds"),
-	flash= require("./connect-flash")
+	flash= require("connect-flash")
 	;
  
 //Required Routes
@@ -39,7 +39,9 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
 	res.locals.currentUser = req.user;
-	next();
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
+next();
 });
 app.use("/",indexRoutes);
 app.use("/projects",projectsRoutes);

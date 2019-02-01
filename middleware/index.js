@@ -1,28 +1,34 @@
-var Project = require("../models/project");
+var project = require("../models/project");
 var Comment = require("../models/comment");
 
 // all the middleare goes here
 var middlewareObj = {};
 
-middlewareObj.checkProjectOwnership = function(req, res, next) {
+middlewareObj.checkprojectOwnership = function(req, res, next) {
     if(req.isAuthenticated()){
-	Project.findById(req.params.id, function(err, foundProject){
+	project.findById(req.params.id, function(err, foundproject){
 		if(err){
+		req.flash("error", "project not found");
 		res.redirect("back");
 		}  else {
-		// does user own
-		// the campground?
-		if(foundProject.author.id.equals(req.user._id))
+		// does
+		// user
+		// own
+		// the
+		// project?
+		if(foundproject.author.id.equals(req.user._id))
 		{
 		next();
 		}
 		else
 		{
+		req.flash("error","Permissions denied");
 		res.redirect("back");
 		}
 		}
-		});
+	});
     } else {
+	req.flash("error", "You need to be logged in to do that");
 	res.redirect("back");
     }
 }
@@ -41,11 +47,13 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
 		}
 		else
 		{
+		req.flash("error","Permissions denied");
 		res.redirect("back");
 		}
 		}
-		});
+	});
     } else {
+	req.flash("error", "Login required");
 	res.redirect("back");
     }
 }
@@ -54,7 +62,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
     if(req.isAuthenticated()){
 	return next();
     }
-    req.flash("success","Please login first.");
+    req.flash("error", "Login required.");
     res.redirect("/login");
 }
 
