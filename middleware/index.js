@@ -1,22 +1,17 @@
 var project = require("../models/project");
 var Comment = require("../models/comment");
 
-// all the middleare goes here
+// all the middleware goes here
 var middlewareObj = {};
 
 middlewareObj.checkprojectOwnership = function(req, res, next) {
     if(req.isAuthenticated()){
-	project.findById(req.params.id, function(err, foundproject){
-		if(err){
+	project.findById(req.params.id, function(err, foundProject){
+		if(err || !foundProject ){
 		req.flash("error", "project not found");
 		res.redirect("back");
 		}  else {
-		// does
-		// user
-		// own
-		// the
-		// project?
-		if(foundproject.author.id.equals(req.user._id))
+		if(foundProject.author.id.equals(req.user._id))
 		{
 		next();
 		}
@@ -36,7 +31,8 @@ middlewareObj.checkprojectOwnership = function(req, res, next) {
 middlewareObj.checkCommentOwnership = function(req, res, next) {
     if(req.isAuthenticated()){
 	Comment.findById(req.params.comment_id, function(err, foundComment){
-		if(err){
+		if(err ||!foundComment){
+		    req.flash("error","Comment not found");
 		res.redirect("back");
 		}  else {
 		// does user own

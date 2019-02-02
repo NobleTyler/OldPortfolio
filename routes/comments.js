@@ -1,13 +1,13 @@
 var express = require("express");
 var router  = express.Router({mergeParams: true});
-var Campground = require("../models/project");
+var Project = require("../models/project");
 var Comment = require("../models/comment");
 var middleware = require("../middleware");
 
 //Comments New
 router.get("/new",middleware.isLoggedIn, function(req, res){
 	console.log(req.params.id);
-	Campground.findById(req.params.id, function(err, project){
+	Project.findById(req.params.id, function(err, project){
 		if(err){
 		console.log(err);
 		} else {
@@ -18,33 +18,40 @@ router.get("/new",middleware.isLoggedIn, function(req, res){
 
 //Comments Create
 router.post("/",middleware.isLoggedIn,function(req, res){
-	Campground.findById(req.params.id, function(err, project){
+	Project.findById(req.params.id, function(err, project){
 		if(err){
 		console.log(err);
 		res.redirect("/projects");
 		} else {
 		Comment.create(req.body.comment, function(err, comment){
 			if(err){
-			console.log(err);
+			req.flash("error","Something went wrong");
 			} else {
 			comment.author.id = req.user._id;
 			comment.author.username = req.user.username;
 			comment.save();
 			project.comments.push(comment);
 			project.save();
+			req.flash("success","Success added comment!");
 			res.redirect('/projects/' + project._id);
 			}
 			});
 		}
 		});
-	});
+});
 
 router.get("/:comment_id/edit",middleware.checkCommentOwnership,function(req,res){
-	Comment.findById(req.params.comment_id, function(err, foundComment){
-		if(err)
+	Project.findById(req.params.id,function(err,foundProject){
+		if(err || !foundProject){
+		req.flash("error","Project was not found");
 		res.redirect("back");
-		else
-		res.render("comments/edit",{project_id: req.params.id,comment:foundComment});
+		} 
+		Comment.findById(req.params.comment_id, function(err, foundComment){
+			if(err)
+			res.redirect("back");
+			else
+			res.render("comments/edit",{project_id: req.params.id,comment:foundComment});
+			});
 		});
 	});
 //comment update
@@ -66,7 +73,8 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, re
 		if(err){
 		res.redirect("back");
 		} else {
-		res.redirect("/campgrounds/" +
+		req.flash("success", "Comment deleted");
+		res.redirect("/projects/" +
 			req.params.id);
 		}
 		});

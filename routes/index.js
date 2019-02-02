@@ -17,9 +17,7 @@ router.post("/register", function(req, res){
 	var newUser = new User({username: req.body.username});
 	User.register(newUser, req.body.password, function(err, user){
 		if(err){
-		console.log(err);
-		req.flash("error",
-			err.message);
+		req.flash("error",err.message);
 		return
 		res.redirect('/register');
 		}
@@ -27,7 +25,7 @@ router.post("/register", function(req, res){
 			res,
 			function(){
 			req.flash("success",
-				"Welcome!"+ req.body.username);
+				"Welcome"+ req.body.username+"!");
 			res.redirect("/projects"); 
 			});
 	});
@@ -38,7 +36,7 @@ router.post("/register", function(req, res){
 router.get("/login",function(req,res){
 	res.render("login");
 	});
-//handel login logic
+//handle login logic
 router.post("/login",passport.authenticate("local",
 	    {
 successRedirect:"/projects",
@@ -51,4 +49,5 @@ router.get("/logout",function(req,res){
 	req.flash("success","You've been logged out");
 	res.redirect("/projects");
 	});
+
 module.exports = router;
