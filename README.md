@@ -7,7 +7,7 @@ In order to run this webapp you will need
 - Node
 - Express
 - NPM
-(https://nobletyler.github.io/Projects/Portfolio/portfolio.png?raw=true)
+[HomePage]:https://nobletyler.github.io/Projects/Portfolio/portfolio.png?raw=true
 ## How do I run it
 ```
 git clone https://github.com/NobleTyler/OldPortfolio.git
